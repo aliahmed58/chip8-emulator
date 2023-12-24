@@ -1,3 +1,7 @@
 build/
 .vscode/
-
+# ignore vim swap and temporary files
+*.swp
+*.swo
+*~
+*.out
