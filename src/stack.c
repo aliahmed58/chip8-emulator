@@ -2,14 +2,14 @@
 #include <stdio.h>
 #include <string.h>
 
-void show(stack *s) {
+void show(Stack *s) {
   for (int i = 0; i < 16; i++) {
     printf("%d ", s->stack_arr[i]);
   }
   printf("\n");
 }
 
-int push(stack *self, short data) {
+int push(Stack *self, short data) {
   if (self->top >= 16) {
     printf("error while 'push': program stack full\n");
     return 1;
@@ -19,7 +19,7 @@ int push(stack *self, short data) {
   return 1;
 }
 
-short pop(stack *self) {
+short pop(Stack *self) {
   if (self->top <= 0) {
     printf("error while 'pop': program stack empty\n");
     return -1;
@@ -29,7 +29,7 @@ short pop(stack *self) {
   return data;
 }
 
-void init_stack(stack *s) {
+void init_stack(Stack *s) {
   printf("stack initalized\n");
   memset(s->stack_arr, 0, sizeof(s->stack_arr));
   s->top = 0;

@@ -19,5 +19,7 @@ file(GLOB chip8_src CONFIGURE_DEPENDS "include/*.h" "src/*.c")
 # Create your game executable target as usual
 add_executable(chip8 WIN32 ${chip8_src})
 
+add_compile_options(-Wall -g)
+
 # Link to the actual SDL3 library.
 target_link_libraries(chip8 PRIVATE SDL3::SDL3)

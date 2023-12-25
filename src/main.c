@@ -1,4 +1,5 @@
 #include "../include/renderer.h"
+#include "../include/timer.h"
 #include <SDL3/SDL.h>
 
 int main(int argc, char *argv[]) {
@@ -6,9 +7,14 @@ int main(int argc, char *argv[]) {
   sdl_struct.sdl_init = sdl_init;
   sdl_struct.sdl_init(&sdl_struct, 500, 500, "something");
 
+  Timer timer;
+  init_timer(&timer);
+  timer.start(&timer);
+
   while (1) {
     int finished = 0;
     SDL_Event event;
+
     while (SDL_PollEvent(&event)) {
       if (event.type == SDL_EVENT_QUIT) {
         finished = 1;

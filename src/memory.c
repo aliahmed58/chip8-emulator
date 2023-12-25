@@ -1,11 +1,12 @@
 #include "../include/memory.h"
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
-short memory[256];
-
+short *memory;
 // method initalizes memory with font and needed initial stuff
 void init_memory() {
+  memory = (short *)malloc(256 * sizeof(short));
   // set complete memory to 0s
   // the only usable memory starts after address 0x200 according to old
   // conventions
@@ -33,13 +34,6 @@ void init_memory() {
   };
   int font_array_size = sizeof(font_hex);
   nbytes_tm(0x50, 0x9F, font_array_size, font_hex);
-
-  for (int i = 0x50; i < 0x9F; i++) {
-    printf("%x ", memory[i]);
-    if (i % 5 == 0) {
-      printf("\n");
-    }
-  }
 }
 
 int nbytes_tm(int start_index, int end_index, int b_size, short *bytes) {

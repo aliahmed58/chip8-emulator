@@ -1,6 +1,6 @@
 #pragma once
 
-extern short memory[256];
+extern short *memory;
 
 // method to init memory with needed data in the start
 void init_memory();
