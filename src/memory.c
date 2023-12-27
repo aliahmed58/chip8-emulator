@@ -1,12 +1,13 @@
 #include "../include/memory.h"
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-short *memory;
+uint16_t *memory;
 // method initalizes memory with font and needed initial stuff
 void init_memory() {
-  memory = (short *)malloc(256 * sizeof(short));
+  memory = (uint16_t *)malloc(256 * sizeof(short));
   // set complete memory to 0s
   // the only usable memory starts after address 0x200 according to old
   // conventions

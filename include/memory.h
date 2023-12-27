@@ -1,6 +1,7 @@
 #pragma once
+#include <stdint.h>
 
-extern short *memory;
+extern uint16_t *memory;
 
 // method to init memory with needed data in the start
 void init_memory();
