@@ -40,10 +40,10 @@ int nbytes_tm(int start_index, int end_index, int b_size, short *bytes) {
 
   int b_counter = 0;
   for (int i = start_index; i < end_index; i++) {
-    memory[i] = bytes[b_counter];
     if (b_counter >= b_size) {
       break;
     }
+    memory[i] = bytes[b_counter];
     b_counter++;
   }
   return 0;
