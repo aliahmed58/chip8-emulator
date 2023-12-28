@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <string.h>
 
+Stack stack_reg;
+
 void show(Stack *s) {
   for (int i = 0; i < 16; i++) {
     printf("%d ", s->stack_arr[i]);

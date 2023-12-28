@@ -1,7 +1,8 @@
 #include "../include/timer.h"
 #include <SDL3/SDL_timer.h>
+#include <stdint.h>
 
-Uint32 get_ticks(Timer *self) {
+uint8_t get_ticks(Timer *self) {
   Uint32 time = 0;
 
   if (self->started == SDL_TRUE) {
@@ -11,7 +12,7 @@ Uint32 get_ticks(Timer *self) {
       time = SDL_GetTicks() - self->start_ticks;
     }
   }
-  return time;
+  return (uint8_t)time;
 }
 
 void start(Timer *self) {

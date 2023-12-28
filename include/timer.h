@@ -1,8 +1,9 @@
 #include <SDL3/SDL.h>
+#include <stdint.h>
 typedef struct Timer {
   // time of start and time of pause
-  Uint32 start_ticks;
-  Uint32 paused_ticks;
+  uint8_t start_ticks;
+  uint8_t paused_ticks;
 
   // timer status
   SDL_bool paused;
@@ -15,7 +16,7 @@ typedef struct Timer {
   void (*unpause)(struct Timer *self);
 
   // get current time ticks
-  Uint32 (*get_ticks)(struct Timer *self);
+  uint8_t (*get_ticks)(struct Timer *self);
 
 } Timer;
 
@@ -25,4 +26,4 @@ void start(Timer *self);
 void stop(Timer *self);
 void pause(Timer *self);
 void unpause(Timer *self);
-Uint32 get_ticks(Timer *self);
+uint8_t get_ticks(Timer *self);

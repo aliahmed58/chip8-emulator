@@ -9,7 +9,7 @@ typedef struct Stack {
   short (*pop)(struct Stack *self);
 } Stack;
 
-extern Stack prg_stack;
+extern Stack stack_reg;
 
 // constructor for the stack
 void init_stack(Stack *s);
