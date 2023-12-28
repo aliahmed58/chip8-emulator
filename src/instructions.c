@@ -74,7 +74,7 @@ void op_7XNN(uint8_t NN, uint8_t X) { gp_regs[X] += NN; }
 
 void op_ANNN(uint16_t NNN) { i_reg = NNN; }
 
-void DXYN(uint8_t X, uint8_t Y) {
+void op_DXYN(uint8_t X, uint8_t Y) {
   uint8_t vx = gp_regs[X];
   uint8_t vy = gp_regs[Y];
   uint8_t *vf = &gp_regs[0xF];

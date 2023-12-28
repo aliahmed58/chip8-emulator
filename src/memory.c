@@ -1,19 +1,18 @@
 #include "../include/memory.h"
+#include <errno.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-uint16_t *memory;
+uint8_t *memory;
 // method initalizes memory with font and needed initial stuff
 void init_memory() {
-  memory = (uint16_t *)malloc(256 * sizeof(short));
-  // set complete memory to 0s
+  memory = (uint8_t *)malloc(MEMORY_SIZE * sizeof(uint8_t));
   // the only usable memory starts after address 0x200 according to old
   // conventions
-  int memory_size = sizeof(memory);
+  int memory_size = MEMORY_SIZE * sizeof(uint8_t);
   memset(memory, 0, memory_size);
-
   // set font in memory
   short font_hex[80] = {
       0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
@@ -37,6 +36,28 @@ void init_memory() {
   nbytes_tm(0x50, 0x9F, font_array_size, font_hex);
 }
 
+int load_rom(char *f_name, uint8_t *buffer) {
+  FILE *file;
+  int file_size;
+
+  // open file stream in binary read-only mode
+  file = fopen(f_name, "rb");
+  if (file == NULL) {
+    printf("File not found. error number: %s\n", strerror(errno));
+    exit(-1);
+    return -1;
+  } else {
+    // find file size and load program
+    fseek(file, 0, SEEK_END);
+    file_size = ftell(file);
+    printf("ROM size: %d\n", file_size);
+    rewind(file);
+
+    fread(buffer, 1, file_size, file);
+    return 0;
+  }
+}
+
 int nbytes_tm(int start_index, int end_index, int b_size, short *bytes) {
 
   int b_counter = 0;
@@ -48,4 +69,13 @@ int nbytes_tm(int start_index, int end_index, int b_size, short *bytes) {
     b_counter++;
   }
   return 0;
+}
+
+void print_mem() {
+
+  for (int i = 0; i < MEMORY_SIZE * sizeof(uint8_t); i++) {
+    printf("%x ", memory[i]);
+    if (i % 5 == 0)
+      printf("\n");
+  }
 }
