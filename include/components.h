@@ -5,3 +5,7 @@ extern uint16_t i_reg;
 extern uint8_t d_timer;
 extern uint8_t s_timer;
 extern uint8_t gp_regs[16];
+
+void init_chip8_components();
+
+void free_mem();

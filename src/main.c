@@ -1,6 +1,6 @@
-#include "../include/display.h"
-#include "../include/memory.h"
 #include "../include/renderer.h"
+#include "../include/instructions.h"
+#include "../include/components.h"
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_rect.h>
 #include <SDL3/SDL_render.h>
@@ -10,8 +10,7 @@
 
 int main(int argc, char *argv[]) {
 
-  init_memory();
-  init_display();
+  init_chip8_components();
 
   struct SDL_struct sdl_struct;
   sdl_struct.sdl_init = sdl_init;
@@ -38,10 +37,9 @@ int main(int argc, char *argv[]) {
     SDL_RenderPresent(sdl_struct.renderer);
   }
 
+  free_mem();
   SDL_DestroyRenderer(sdl_struct.renderer);
   SDL_DestroyWindow(sdl_struct.window);
 
-  free(display);
-  free(memory);
   SDL_Quit();
 }
