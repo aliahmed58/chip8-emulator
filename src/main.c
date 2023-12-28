@@ -15,11 +15,16 @@ int main(int argc, char *argv[]) {
   sdl_struct.sdl_init(&sdl_struct, 512, 512, "something");
 
   init_chip8_components();
-  print_mem();
+  load_rom("../res/ibm.ch8", memory);
 
   while (1) {
     int finished = 0;
     SDL_Event event;
+
+    uint8_t out[2];
+    uint8_t *instr_arr = out;
+    fetch(instr_arr);
+    decode_execute(instr_arr);
 
     while (SDL_PollEvent(&event)) {
       if (event.type == SDL_EVENT_QUIT) {

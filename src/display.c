@@ -23,7 +23,7 @@ void init_display() {
 
 // TODO: Get memory address start and end of byte from I,
 // Change VF and do XOR operation between pixel bit and sprite bit.
-void wt_d_buffer(uint16_t *memory, uint8_t *VF, int VX, int VY) {
+void wt_d_buffer(uint8_t *memory, uint8_t *VF, int VX, int VY) {
   int x = VX;
   int y = VY;
 
