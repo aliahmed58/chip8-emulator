@@ -48,6 +48,5 @@ int main(int argc, char *argv[]) {
   free_mem();
   SDL_DestroyRenderer(sdl_struct.renderer);
   SDL_DestroyWindow(sdl_struct.window);
-
   SDL_Quit();
 }

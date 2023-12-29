@@ -77,9 +77,42 @@ void op_2NNN(uint16_t NNN) {
   stack_reg.push(&stack_reg, pc_reg);
 }
 
+void op_3XNN(uint8_t VX, uint8_t NN) {
+  if (VX == NN) {
+    pc_reg += 2;
+  }
+}
+
+void op_4XNN(uint16_t VX, uint8_t NN) {
+  if (VX != NN) {
+    pc_reg += 2;
+  }
+}
+
+void op_5XY0(uint8_t VX, uint8_t VY) {
+  if (VX == VY) {
+    pc_reg += 2;
+  }
+}
+
 void op_6XNN(uint8_t NN, uint8_t X) { gp_regs[X] = NN; }
 
+void op_9XY0(uint8_t VX, uint8_t VY) {
+  if (VX != VY) {
+    pc_reg += 2;
+  }
+}
 void op_7XNN(uint8_t NN, uint8_t X) { gp_regs[X] += NN; }
+
+void op_8XYO(uint8_t VX, uint8_t VY) { gp_regs[VX] = gp_regs[VY]; }
+
+void op_8XY1(uint8_t VX, uint8_t VY) { gp_regs[VX] |= gp_regs[VY]; }
+
+void op_8XY2(uint8_t VX, uint8_t VY) { gp_regs[VX] &= gp_regs[VY]; }
+
+void op_8XY3(uint8_t VX, uint8_t VY) { gp_regs[VX] ^= gp_regs[VY]; }
+
+void op_8XY4(uint8_t VX, uint8_t VY) { gp_regs[VX] += gp_regs[VY]; }
 
 void op_ANNN(uint16_t NNN) { i_reg = NNN; }
 

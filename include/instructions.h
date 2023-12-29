@@ -41,6 +41,27 @@ void op_6XNN(uint8_t NN, uint8_t X);
 // 7XNN - Add value to register VX
 void op_7XNN(uint8_t NN, uint8_t X);
 
+// Logical and Arithmetic Instructions
+// 8XY0 - Set VX = VY
+void op_8XYO(uint8_t VX, uint8_t VY);
+
+// 8XY1 - Set VX = Binary OR of VX and VY
+void op_8XY1(uint8_t VX, uint8_t VY);
+
+// 8XY2 - Set in VX = Binary AND of VX and VY
+void op_8XY2(uint8_t VX, uint8_t VY);
+
+// 8XY3 - Set VX = Binary XOR of VX and VY
+void op_8XY3(uint8_t VX, uint8_t VY);
+
+// 8XY4 - Set VX = VX + VY
+void op_8XY4(uint8_t VX, uint8_t VY);
+
+// 8XY5 - Set VX = VX - VY
+void op_8XY5(uint8_t VX, uint8_t VY);
+
+// 8XY7 - Set VX = VY - VX
+
 // 9XY0 - Skip if VX != VY
 void op_9XY0(uint8_t VX, uint8_t VY);
 
