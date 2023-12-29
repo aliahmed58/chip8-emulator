@@ -11,7 +11,7 @@
 #define SCALE_X (SDL_WIDTH / DISPLAY_WIDTH)
 #define SCALE_Y (SDL_HEIGHT / DISPLAY_HEIGHT)
 
-extern uint16_t *display;
+extern uint8_t *display;
 
 // for debug purposes
 void print_array();

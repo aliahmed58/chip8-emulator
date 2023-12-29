@@ -6,12 +6,12 @@
 #include <string.h>
 
 // declare display array pointer
-uint16_t *display;
+uint8_t *display;
 
 void init_display() {
   // allocate memory for display and set it to 0 initially
-  int size = DISPLAY_WIDTH * DISPLAY_HEIGHT * sizeof(uint16_t);
-  display = (uint16_t *)malloc(size);
+  int size = DISPLAY_WIDTH * DISPLAY_HEIGHT * sizeof(uint8_t);
+  display = (uint8_t *)malloc(size);
   // check if memory is allocated correctly
   if (display == NULL) {
     printf("Display buffer allocation failed");
@@ -25,16 +25,24 @@ void wt_d_buffer(uint8_t *memory, uint8_t *VF, int VX, int VY, uint8_t N,
                  uint16_t I) {
   int x = VX % 64;
   int y = VY % 32;
+  *VF = 0;
 
   for (int i = I; i < N + I; i++) {
     uint8_t byte = memory[i];
     int bit, index;
     for (int bits = 7; bits >= 0; bits--) {
+      // get individual bits from the byte
       bit = (byte >> bits) & 1;
-      if (bit == 1) {
-        index = 64 * y + x;
-        display[index] = 1;
+
+      // calculate index for the display buffer
+      index = 64 * y + x;
+      if (display[index] == 1 && bit == 1) {
+        *VF = 1;
       }
+
+      // xor the operation to find out new pixel
+      display[index] ^= bit;
+
       x++;
     }
     x = VX;
