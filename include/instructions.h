@@ -30,4 +30,4 @@ void op_7XNN(uint8_t NN, uint8_t X);
 void op_ANNN(uint16_t NNN);
 
 // DXYN - Draw screen buffer
-void op_DXYN(uint8_t X, uint8_t Y);
+void op_DXYN(uint8_t X, uint8_t Y, uint8_t N);

@@ -15,16 +15,17 @@ int main(int argc, char *argv[]) {
   sdl_struct.sdl_init(&sdl_struct, 512, 512, "something");
 
   init_chip8_components();
-  load_rom("../res/ibm.ch8", memory);
+  load_rom("../res/ibm.ch8", memory + 0x200);
 
   while (1) {
     int finished = 0;
     SDL_Event event;
 
-    uint8_t out[2];
-    uint8_t *instr_arr = out;
-    fetch(instr_arr);
-    decode_execute(instr_arr);
+    // fetch decode execute
+    uint8_t out[2] = {0};
+
+    fetch(out);
+    decode_execute(out);
 
     while (SDL_PollEvent(&event)) {
       if (event.type == SDL_EVENT_QUIT) {
@@ -37,7 +38,7 @@ int main(int argc, char *argv[]) {
     }
 
     // Clear screen
-    SDL_SetRenderDrawColor(sdl_struct.renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+    SDL_SetRenderDrawColor(sdl_struct.renderer, 0, 0, 0, 0xFF);
     SDL_RenderClear(sdl_struct.renderer);
 
     draw(sdl_struct.renderer);

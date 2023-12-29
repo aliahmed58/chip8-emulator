@@ -18,7 +18,8 @@ void print_array();
 void init_display();
 
 // write to display buffer
-void wt_d_buffer(uint8_t *memory, uint8_t *VF, int VX, int VY);
+void wt_d_buffer(uint8_t *memory, uint8_t *vf, int vx, int vy, uint8_t N,
+                 uint16_t I);
 
 // draw on SDL screen using renderer
 void draw(SDL_Renderer *renderer);

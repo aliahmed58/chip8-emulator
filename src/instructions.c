@@ -9,7 +9,7 @@ uint8_t *fetch(uint8_t *out) {
   pc_reg++;
 
   out[0] = byte_1;
-  out[2] = byte_2;
+  out[1] = byte_2;
 
   return out;
 }
@@ -59,7 +59,9 @@ void decode_execute(uint8_t *instr_arr) {
     break;
   case 0xD:
     // draw screen buffer on screen
-    op_DXYN(X, Y);
+    op_DXYN(X, Y, N);
+    break;
+  default:
     break;
   }
 }
@@ -74,10 +76,10 @@ void op_7XNN(uint8_t NN, uint8_t X) { gp_regs[X] += NN; }
 
 void op_ANNN(uint16_t NNN) { i_reg = NNN; }
 
-void op_DXYN(uint8_t X, uint8_t Y) {
+void op_DXYN(uint8_t X, uint8_t Y, uint8_t N) {
   uint8_t vx = gp_regs[X];
   uint8_t vy = gp_regs[Y];
   uint8_t *vf = &gp_regs[0xF];
   // call displays draw function here
-  wt_d_buffer(memory, vf, vx, vy);
+  wt_d_buffer(memory, vf, vx, vy, N, i_reg);
 }
