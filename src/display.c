@@ -21,16 +21,13 @@ void init_display() {
   memset(display, 0, size);
 }
 
-// TODO: Get memory address start and end of byte from I,
-// Change VF and do XOR operation between pixel bit and sprite bit.
 void wt_d_buffer(uint8_t *memory, uint8_t *VF, int VX, int VY, uint8_t N,
                  uint16_t I) {
-  int x = VX;
-  int y = VY;
-  printf("Index register value: %x\n", I);
+  int x = VX % 64;
+  int y = VY % 32;
 
   for (int i = I; i < N + I; i++) {
-    short byte = memory[i];
+    uint8_t byte = memory[i];
     int bit, index;
     for (int bits = 7; bits >= 0; bits--) {
       bit = (byte >> bits) & 1;
@@ -38,7 +35,6 @@ void wt_d_buffer(uint8_t *memory, uint8_t *VF, int VX, int VY, uint8_t N,
         index = 64 * y + x;
         display[index] = 1;
       }
-
       x++;
     }
     x = VX;

@@ -12,10 +12,10 @@ int main(int argc, char *argv[]) {
 
   struct SDL_struct sdl_struct;
   sdl_struct.sdl_init = sdl_init;
-  sdl_struct.sdl_init(&sdl_struct, 512, 512, "something");
+  sdl_struct.sdl_init(&sdl_struct, SDL_WIDTH, SDL_HEIGHT, "something");
 
   init_chip8_components();
-  load_rom("../res/ibm.ch8", memory + 0x200);
+  load_rom("../res/1-chip8-logo.ch8", memory + 0x200);
 
   while (1) {
     int finished = 0;
@@ -38,7 +38,7 @@ int main(int argc, char *argv[]) {
     }
 
     // Clear screen
-    SDL_SetRenderDrawColor(sdl_struct.renderer, 0, 0, 0, 0xFF);
+    SDL_SetRenderDrawColor(sdl_struct.renderer, 47, 60, 126, 0xFF);
     SDL_RenderClear(sdl_struct.renderer);
 
     draw(sdl_struct.renderer);
