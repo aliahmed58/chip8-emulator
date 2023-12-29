@@ -66,9 +66,16 @@ void decode_execute(uint8_t *instr_arr) {
   }
 }
 
-void op_00E0() {}
+void op_00E0() { clear_buffer(); }
+
+void op_00EE() { pc_reg = stack_reg.pop(&stack_reg); }
 
 void op_1NNN(uint16_t NNN) { pc_reg = NNN; }
+
+void op_2NNN(uint16_t NNN) {
+  pc_reg = NNN;
+  stack_reg.push(&stack_reg, pc_reg);
+}
 
 void op_6XNN(uint8_t NN, uint8_t X) { gp_regs[X] = NN; }
 

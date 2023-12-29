@@ -25,3 +25,6 @@ void wt_d_buffer(uint8_t *memory, uint8_t *vf, int vx, int vy, uint8_t N,
 
 // draw on SDL screen using renderer
 void draw(SDL_Renderer *renderer);
+
+// clear screen buffer
+void clear_buffer();

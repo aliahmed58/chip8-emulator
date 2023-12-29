@@ -17,14 +17,32 @@ void decode_execute(uint8_t *instr_arr);
 // 00E0 - Clear Screen
 void op_00E0();
 
+// 00EE - Return from Subroutine, pop last address out of stack
+void op_00EE();
+
 // 1NNN - Jump
 void op_1NNN(uint16_t NNN);
+
+// 2NNN - Add Subroutine to stack
+void op_2NNN(uint16_t NNN);
+
+// 3XNN - Skip if VX == NN
+void op_3XNN(uint8_t VX, uint8_t NN);
+
+// 4XNN - Skip if VX != NN
+void op_4XNN(uint16_t VX, uint8_t NN);
+
+// 5XY0 - Skip if VX == VY
+void op_5XY0(uint8_t VX, uint8_t VY);
 
 // 6XNN - Set register VX
 void op_6XNN(uint8_t NN, uint8_t X);
 
 // 7XNN - Add value to register VX
 void op_7XNN(uint8_t NN, uint8_t X);
+
+// 9XY0 - Skip if VX != VY
+void op_9XY0(uint8_t VX, uint8_t VY);
 
 // ANNN - Set index register I
 void op_ANNN(uint16_t NNN);

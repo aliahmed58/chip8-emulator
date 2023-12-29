@@ -62,6 +62,10 @@ void draw(SDL_Renderer *renderer) {
   }
 }
 
+void clear_buffer() {
+  memset(display, 0, DISPLAY_HEIGHT * DISPLAY_WIDTH * sizeof(uint8_t));
+}
+
 // print array
 void print_array() {
   for (int x = 0; x < DISPLAY_WIDTH; x++) {
