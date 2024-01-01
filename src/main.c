@@ -15,7 +15,7 @@ int main(int argc, char *argv[]) {
   sdl_struct.sdl_init(&sdl_struct, SDL_WIDTH, SDL_HEIGHT, "something");
 
   init_chip8_components();
-  load_rom("../res/corax.ch8", memory + 0x200);
+  load_rom("../res/4-flags.ch8", memory + 0x200);
 
   while (1) {
     int finished = 0;

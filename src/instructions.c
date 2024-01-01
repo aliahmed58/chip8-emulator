@@ -1,4 +1,5 @@
 #include "../include/instructions.h"
+#include <stdint.h>
 
 uint8_t *fetch(uint8_t *out) {
   // check if pc_reg is in range of memory
@@ -185,34 +186,35 @@ void op_8XY2(uint8_t VX, uint8_t VY) { gp_regs[VX] &= gp_regs[VY]; }
 
 void op_8XY3(uint8_t VX, uint8_t VY) { gp_regs[VX] ^= gp_regs[VY]; }
 
-void op_8XY4(uint8_t VX, uint8_t VY) { gp_regs[VX] += gp_regs[VY]; }
+void op_8XY4(uint8_t VX, uint8_t VY) {
+  uint8_t overflow_bit = (UINT8_MAX - gp_regs[VX] < gp_regs[VY]);
+  uint8_t copy_x = gp_regs[VX];
+  gp_regs[VX] += gp_regs[VY];
+  gp_regs[0xF] = overflow_bit;
+}
 
 void op_8XY5(uint8_t VX, uint8_t VY) {
-  gp_regs[0xF] = 1;
+  uint8_t carry = (gp_regs[VX] >= gp_regs[VY]);
   gp_regs[VX] = gp_regs[VX] - gp_regs[VY];
-  if (gp_regs[VX] < 0) {
-    gp_regs[0xF] = 0;
-  }
+  gp_regs[0xF] = carry;
 }
 
 void op_8XY7(uint8_t VX, uint8_t VY) {
-  gp_regs[0xF] = 1;
+  uint8_t carry = (gp_regs[VY] >= gp_regs[VX]);
   gp_regs[VX] = gp_regs[VY] - gp_regs[VX];
-  if (gp_regs[VX] < 0) {
-    gp_regs[0xF] = 0;
-  }
+  gp_regs[0xF] = carry;
 }
 
 void op_8XY6(uint8_t VX, uint8_t VY) {
   uint8_t lsb = gp_regs[VX] & 1;
-  gp_regs[0xF] = lsb;
   gp_regs[VX] = gp_regs[VX] >> 1;
+  gp_regs[0xF] = lsb;
 }
 
 void op_8XYE(uint8_t VX, uint8_t VY) {
   uint8_t msb = (gp_regs[VX] >> 7) & 1;
-  gp_regs[0xF] = msb;
   gp_regs[VX] = gp_regs[VX] << 1;
+  gp_regs[0xF] = msb;
 }
 
 void op_ANNN(uint16_t NNN) { i_reg = NNN; }
