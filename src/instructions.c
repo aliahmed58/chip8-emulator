@@ -61,33 +61,8 @@ void decode_execute(uint8_t *instr_arr) {
     // Add value NN to register VX
     op_7XNN(NN, X);
     break;
-  case 0x8:
-    switch (N) {
-    case 0x1:
-      op_8XY1(X, Y);
-      break;
-    case 0x2:
-      op_8XY2(X, Y);
-      break;
-    case 0x3:
-      op_8XY3(X, Y);
-      break;
-    case 0x4:
-      op_8XY4(X, Y);
-      break;
-    case 0x5:
-      op_8XY5(X, Y);
-      break;
-    case 0x6:
-      op_8XY6(X, Y);
-      break;
-    case 0x7:
-      op_8XY7(X, Y);
-      break;
-    case 0xE:
-      op_8XYE(X, Y);
-      break;
-    }
+  case 0x9:
+    op_9XY0(X, Y);
     break;
   case 0xA:
     // Set index reigster I to value NNN
@@ -96,9 +71,33 @@ void decode_execute(uint8_t *instr_arr) {
   case 0xB:
     op_BNNN(NNN);
     break;
+  case 0xC:
+    op_CXNN(NN, X);
+    break;
   case 0xD:
     // draw screen buffer on screen
     op_DXYN(X, Y, N);
+    break;
+  case 0xF:
+    switch (NN) {
+    case 0x0A:
+      break;
+    case 0x29:
+      op_FX29(X);
+      break;
+    case 0x1E:
+      op_FX1E(X);
+      break;
+    case 0x55:
+      op_FX55(X);
+      break;
+    case 0X33:
+      op_FX33(X);
+      break;
+    case 0x65:
+      op_FX65(X);
+      break;
+    }
     break;
   }
 }
@@ -115,19 +114,19 @@ void op_2NNN(uint16_t NNN) {
 }
 
 void op_3XNN(uint8_t VX, uint8_t NN) {
-  if (VX == NN) {
+  if (gp_regs[VX] == NN) {
     pc_reg += 2;
   }
 }
 
 void op_4XNN(uint16_t VX, uint8_t NN) {
-  if (VX != NN) {
+  if (gp_regs[VX] != NN) {
     pc_reg += 2;
   }
 }
 
 void op_5XY0(uint8_t VX, uint8_t VY) {
-  if (VX == VY) {
+  if (gp_regs[VX] == gp_regs[VY]) {
     pc_reg += 2;
   }
 }
@@ -135,7 +134,7 @@ void op_5XY0(uint8_t VX, uint8_t VY) {
 void op_6XNN(uint8_t NN, uint8_t X) { gp_regs[X] = NN; }
 
 void op_9XY0(uint8_t VX, uint8_t VY) {
-  if (VX != VY) {
+  if (gp_regs[VX] != gp_regs[VY]) {
     pc_reg += 2;
   }
 }
@@ -207,7 +206,7 @@ void op_FX33(uint8_t VX) {
   uint8_t copy = gp_regs[VX];
   while (copy != 0) {
     int bcd = copy % 10;
-    memory[i_reg + i] = i;
+    memory[i_reg + i] = bcd;
     i--;
     copy /= 10;
   }
