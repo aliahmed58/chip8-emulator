@@ -1,5 +1,4 @@
 #include "../include/instructions.h"
-#include <stdint.h>
 
 uint8_t *fetch(uint8_t *out) {
   // check if pc_reg is in range of memory
@@ -39,11 +38,26 @@ void decode_execute(uint8_t *instr_arr) {
     if (NNN == 0x0E0) {
       // clear display
       op_00E0();
+    } else if (NNN == 0x0EE) {
+      // pop from stack
+      op_00EE();
     }
     break;
   case 0x1:
     // Jump PC to NNN
     op_1NNN(NNN);
+    break;
+  case 0x2:
+    op_2NNN(NNN);
+    break;
+  case 0x3:
+    op_3XNN(X, NN);
+    break;
+  case 0x4:
+    op_4XNN(X, NN);
+    break;
+  case 0x5:
+    op_5XY0(X, Y);
     break;
   case 0x6:
     // Set register VX to value NN
@@ -57,11 +71,12 @@ void decode_execute(uint8_t *instr_arr) {
     // Set index reigster I to value NNN
     op_ANNN(NNN);
     break;
+  case 0xB:
+    op_BNNN(NNN);
+    break;
   case 0xD:
     // draw screen buffer on screen
     op_DXYN(X, Y, N);
-    break;
-  default:
     break;
   }
 }
@@ -114,7 +129,83 @@ void op_8XY3(uint8_t VX, uint8_t VY) { gp_regs[VX] ^= gp_regs[VY]; }
 
 void op_8XY4(uint8_t VX, uint8_t VY) { gp_regs[VX] += gp_regs[VY]; }
 
+void op_8XY5(uint8_t VX, uint8_t VY) {
+  gp_regs[0xF] = 1;
+  gp_regs[VX] = gp_regs[VX] - gp_regs[VY];
+  if (gp_regs[VX] < 0) {
+    gp_regs[0xF] = 0;
+  }
+}
+
+void op_8XY7(uint8_t VX, uint8_t VY) {
+  gp_regs[0xF] = 1;
+  gp_regs[VX] = gp_regs[VY] - gp_regs[VX];
+  if (gp_regs[VX] < 0) {
+    gp_regs[0xF] = 0;
+  }
+}
+
+void op_8XY6(uint8_t VX, uint8_t VY) {
+  uint8_t lsb = gp_regs[VX] & 1;
+  gp_regs[0xF] = lsb;
+  gp_regs[VX] = gp_regs[VX] >> 1;
+}
+
+void op_8XYE(uint8_t VX, uint8_t VY) {
+  uint8_t msb = (gp_regs[VX] >> 7) & 1;
+  gp_regs[0xF] = msb;
+  gp_regs[VX] = gp_regs[VX] << 1;
+}
+
 void op_ANNN(uint16_t NNN) { i_reg = NNN; }
+
+void op_BNNN(uint16_t NNN) { pc_reg = NNN + gp_regs[0x0]; }
+
+void op_CXNN(uint8_t NN, uint8_t VX) {
+  srand(time(NULL));
+  int r = rand();
+  uint8_t result = r & NN;
+  gp_regs[VX] = result;
+}
+
+void op_FX1E(uint8_t VX) {
+  if ((i_reg + gp_regs[VX]) > 0x0FFF) {
+    gp_regs[0xF] = 1;
+  }
+  i_reg += gp_regs[VX];
+}
+
+void op_FX29(uint8_t VX) {
+  int memory_index = 0x50 + gp_regs[VX] * 0x5;
+  i_reg = memory[memory_index];
+}
+
+void op_FX33(uint8_t VX) {
+  int i = 2;
+  uint8_t copy = gp_regs[VX];
+  while (copy != 0) {
+    int bcd = copy % 10;
+    memory[i_reg + i] = i;
+    i--;
+    copy /= 10;
+  }
+}
+
+void op_FX55(uint8_t VX) {
+  int offset = 0;
+  for (int i = 0x0; i <= VX; i++) {
+    memory[i_reg + offset] = gp_regs[i];
+    offset++;
+  }
+}
+
+void op_FX65(uint8_t VX) {
+  int offset = 0;
+  for (int i = 0x0; i <= VX; i++) {
+    gp_regs[i] = memory[i_reg + offset];
+    offset++;
+  }
+}
 
 void op_DXYN(uint8_t X, uint8_t Y, uint8_t N) {
   uint8_t vx = gp_regs[X];

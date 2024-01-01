@@ -4,6 +4,8 @@
 #include "../include/stack.h"
 #include <stdint.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
 // Fetch -> Decode -> Execute cycle
 // Fetch 2 bytes from memory, increment PC by 2 and return the bytes
@@ -61,12 +63,43 @@ void op_8XY4(uint8_t VX, uint8_t VY);
 void op_8XY5(uint8_t VX, uint8_t VY);
 
 // 8XY7 - Set VX = VY - VX
+void op_8XY7(uint8_t VX, uint8_t VY);
+
+// 8XY6 - Shift 1 bit right VX
+void op_8XY6(uint8_t VX, uint8_t VY);
+
+// 8XYE - Shift 1 bit right VX
+void op_8XYE(uint8_t VX, uint8_t VY);
 
 // 9XY0 - Skip if VX != VY
 void op_9XY0(uint8_t VX, uint8_t VY);
 
 // ANNN - Set index register I
 void op_ANNN(uint16_t NNN);
+
+// BNNN - Jump with Offset PC = NNN + V0
+void op_BNNN(uint16_t NNN);
+
+// CXNN - VX = Random AND with NN
+void op_CXNN(uint8_t NN, uint8_t VX);
+
+// FX1E - Add to Index I += VX, VF = 1 if I > 0XFFF
+void op_FX1E(uint8_t VX);
+
+// FX0A - Get Key
+void op_FX0A(uint8_t VX);
+
+// FX29 - Font Character
+void op_FX29(uint8_t VX);
+
+// FX33 - BCD conversion
+void op_FX33(uint8_t VX);
+
+// FX55 - Store in Memory from V0 to VX
+void op_FX55(uint8_t VX);
+
+// FX65 - Load to registers from memory
+void op_FX65(uint8_t VX);
 
 // DXYN - Draw screen buffer
 void op_DXYN(uint8_t X, uint8_t Y, uint8_t N);

@@ -12,20 +12,13 @@ void show(Stack *s) {
 }
 
 int push(Stack *self, short data) {
-  if (self->top >= 16) {
-    printf("error while 'push': program stack full\n");
-    return 1;
-  }
   self->stack_arr[self->top] = data;
   self->top++;
   return 1;
 }
 
 short pop(Stack *self) {
-  if (self->top <= 0) {
-    printf("error while 'pop': program stack empty\n");
-    return -1;
-  }
+
   short data = self->stack_arr[self->top];
   self->top--;
   return data;
