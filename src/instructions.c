@@ -38,17 +38,11 @@ void decode_execute(uint8_t *instr_arr) {
     if (NNN == 0x0E0) {
       // clear display
       op_00E0();
-    } else if (NNN == 0x0EE) {
-      // pop from stack
-      op_00EE();
     }
     break;
   case 0x1:
     // Jump PC to NNN
     op_1NNN(NNN);
-    break;
-  case 0x2:
-    op_2NNN(NNN);
     break;
   case 0x3:
     op_3XNN(X, NN);
@@ -66,6 +60,34 @@ void decode_execute(uint8_t *instr_arr) {
   case 0x7:
     // Add value NN to register VX
     op_7XNN(NN, X);
+    break;
+  case 0x8:
+    switch (N) {
+    case 0x1:
+      op_8XY1(X, Y);
+      break;
+    case 0x2:
+      op_8XY2(X, Y);
+      break;
+    case 0x3:
+      op_8XY3(X, Y);
+      break;
+    case 0x4:
+      op_8XY4(X, Y);
+      break;
+    case 0x5:
+      op_8XY5(X, Y);
+      break;
+    case 0x6:
+      op_8XY6(X, Y);
+      break;
+    case 0x7:
+      op_8XY7(X, Y);
+      break;
+    case 0xE:
+      op_8XYE(X, Y);
+      break;
+    }
     break;
   case 0xA:
     // Set index reigster I to value NNN
