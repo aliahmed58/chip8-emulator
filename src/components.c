@@ -14,9 +14,8 @@ void init_chip8_components() {
   init_memory();
   init_display();
   init_stack(&stack_reg);
-  uint16_t pc_reg = 0x200;
-  uint16_t i_reg = 0;
-  uint8_t gp_regs[16];
+  pc_reg = 0x200;
+  i_reg = 0;
   memset(&gp_regs, 0, 16);
 }
 

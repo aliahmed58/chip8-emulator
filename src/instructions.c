@@ -34,15 +34,21 @@ void decode_execute(uint8_t *instr_arr) {
   switch (first_nibble) {
   // Instructions starting with 0
   case 0x0:
-    // Clear screen - 0x00E0
-    if (NNN == 0x0E0) {
-      // clear display
+    switch (NN) {
+    case 0xEE:
+      op_00EE();
+      break;
+    case 0xE0:
       op_00E0();
+      break;
     }
     break;
   case 0x1:
     // Jump PC to NNN
     op_1NNN(NNN);
+    break;
+  case 0x2:
+    op_2NNN(NNN);
     break;
   case 0x3:
     op_3XNN(X, NN);
@@ -60,6 +66,37 @@ void decode_execute(uint8_t *instr_arr) {
   case 0x7:
     // Add value NN to register VX
     op_7XNN(NN, X);
+    break;
+  case 0x8:
+    switch (N) {
+    case 0x0:
+      op_8XYO(X, Y);
+      break;
+    case 0x1:
+      op_8XY1(X, Y);
+      break;
+    case 0x2:
+      op_8XY2(X, Y);
+      break;
+    case 0x3:
+      op_8XY3(X, Y);
+      break;
+    case 0x4:
+      op_8XY4(X, Y);
+      break;
+    case 0x5:
+      op_8XY5(X, Y);
+      break;
+    case 0x6:
+      op_8XY6(X, Y);
+      break;
+    case 0x7:
+      op_8XY7(X, Y);
+      break;
+    case 0xE:
+      op_8XYE(X, Y);
+      break;
+    }
     break;
   case 0x9:
     op_9XY0(X, Y);
@@ -109,8 +146,8 @@ void op_00EE() { pc_reg = stack_reg.pop(&stack_reg); }
 void op_1NNN(uint16_t NNN) { pc_reg = NNN; }
 
 void op_2NNN(uint16_t NNN) {
-  pc_reg = NNN;
   stack_reg.push(&stack_reg, pc_reg);
+  pc_reg = NNN;
 }
 
 void op_3XNN(uint8_t VX, uint8_t NN) {
