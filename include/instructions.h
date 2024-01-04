@@ -12,7 +12,7 @@
 uint8_t *fetch(uint8_t *out);
 
 // Decode and execute
-void decode_execute(uint8_t *instr_arr);
+void decode_execute(uint8_t *instr_arr, uint8_t key_press);
 
 // Instruction set defined below
 
@@ -83,11 +83,17 @@ void op_BNNN(uint16_t NNN);
 // CXNN - VX = Random AND with NN
 void op_CXNN(uint8_t NN, uint8_t VX);
 
-// FX1E - Add to Index I += VX, VF = 1 if I > 0XFFF
-void op_FX1E(uint8_t VX);
+// EX9E - Skip if Key
+void op_EX9E(uint8_t VX, uint8_t key_press);
+
+// EXA1 - SKip if key
+void op_EXA1(uint8_t VX, uint8_t key_press);
 
 // FX0A - Get Key
-void op_FX0A(uint8_t VX);
+void op_FX0A(uint8_t VX, uint8_t key_press);
+
+// FX1E - Add to Index I += VX, VF = 1 if I > 0XFFF
+void op_FX1E(uint8_t VX);
 
 // FX29 - Font Character
 void op_FX29(uint8_t VX);

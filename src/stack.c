@@ -17,18 +17,18 @@ int push(Stack *self, short data) {
   }
   self->stack_arr[self->top] = data;
   self->top++;
-  printf("pushed to stack %x pointer on: %d\n", data, self->top);
+  // printf("pushed to stack %x pointer on: %d\n", data, self->top);
   return 1;
 }
 
 short pop(Stack *self) {
   self->top--;
   if (self->top < 0) {
-    printf("stack pointer in negative, reset to 0");
+    // printf("stack pointer in negative, reset to 0");
     self->top = 0;
   }
   short data = self->stack_arr[self->top];
-  printf("popped from stack %x pointer on: %d\n", data, self->top);
+  //: printf("popped from stack %x pointer on: %d\n", data, self->top);
   return data;
 }
 

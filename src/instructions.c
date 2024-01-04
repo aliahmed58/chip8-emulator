@@ -1,5 +1,6 @@
 #include "../include/instructions.h"
 #include <stdint.h>
+#include <stdio.h>
 
 uint8_t *fetch(uint8_t *out) {
   // check if pc_reg is in range of memory
@@ -14,7 +15,7 @@ uint8_t *fetch(uint8_t *out) {
   return out;
 }
 
-void decode_execute(uint8_t *instr_arr) {
+void decode_execute(uint8_t *instr_arr, uint8_t key_press) {
   uint8_t byte1 = instr_arr[0];
   uint8_t byte2 = instr_arr[1];
   uint16_t complete = (byte1 << 8) | byte2;
@@ -116,9 +117,20 @@ void decode_execute(uint8_t *instr_arr) {
     // draw screen buffer on screen
     op_DXYN(X, Y, N);
     break;
+  case 0xE:
+    switch (NN) {
+    case 0x9E:
+      op_EX9E(X, key_press);
+      break;
+    case 0xA1:
+      op_EXA1(X, key_press);
+      break;
+    }
+    break;
   case 0xF:
     switch (NN) {
     case 0x0A:
+      op_FX0A(X, key_press);
       break;
     case 0x29:
       op_FX29(X);
@@ -226,6 +238,27 @@ void op_CXNN(uint8_t NN, uint8_t VX) {
   int r = rand();
   uint8_t result = r & NN;
   gp_regs[VX] = result;
+}
+
+void op_EX9E(uint8_t VX, uint8_t key_press) {
+  if (gp_regs[VX] == key_press) {
+    pc_reg += 2;
+  }
+}
+
+void op_EXA1(uint8_t VX, uint8_t key_press) {
+  if (gp_regs[VX] != key_press) {
+    pc_reg += 2;
+  }
+}
+
+void op_FX0A(uint8_t VX, uint8_t key_press) {
+  printf("key press %x\n", key_press);
+  if (key_press >= 0x0 && key_press <= 0xF) {
+    gp_regs[VX] = key_press;
+    return;
+  }
+  pc_reg -= 2;
 }
 
 void op_FX1E(uint8_t VX) {
