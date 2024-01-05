@@ -1,9 +1,12 @@
+#pragma once
 #include <SDL3/SDL.h>
 #include <stdint.h>
 typedef struct Timer {
   // time of start and time of pause
   uint8_t start_ticks;
   uint8_t paused_ticks;
+  uint8_t interval;
+  Uint32 seen;
 
   // timer status
   SDL_bool paused;

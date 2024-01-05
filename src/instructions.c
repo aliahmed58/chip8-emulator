@@ -2,6 +2,8 @@
 #include <stdint.h>
 #include <stdio.h>
 
+int instruction_count = 0;
+
 uint8_t *fetch(uint8_t *out) {
   // check if pc_reg is in range of memory
   uint8_t byte_1 = memory[pc_reg];
@@ -15,7 +17,25 @@ uint8_t *fetch(uint8_t *out) {
   return out;
 }
 
-void decode_execute(uint8_t *instr_arr, uint8_t key_press) {
+void decode_execute(uint8_t *instr_arr, uint8_t key_press,
+                    uint8_t key_release) {
+  instruction_count++;
+  // reset instruction count every 700 instructions
+  if (instruction_count == 700) {
+    instruction_count = 0;
+  }
+
+  // for every 100 instructions decrement the timer once
+  // to give it an effect wihout using computer time
+  // used as an abstraction
+  if (instruction_count % 100 == 0) {
+    if (delay_timer > 0) {
+      delay_timer--;
+    }
+    if (sound_timer > 0) {
+      sound_timer--;
+    }
+  }
   uint8_t byte1 = instr_arr[0];
   uint8_t byte2 = instr_arr[1];
   uint16_t complete = (byte1 << 8) | byte2;
@@ -129,8 +149,17 @@ void decode_execute(uint8_t *instr_arr, uint8_t key_press) {
     break;
   case 0xF:
     switch (NN) {
+    case 0x07:
+      op_FX07(X);
+      break;
     case 0x0A:
-      op_FX0A(X, key_press);
+      op_FX0A(X, key_press, key_release);
+      break;
+    case 0x15:
+      op_FX15(X);
+      break;
+    case 0x18:
+      op_FX18(X);
       break;
     case 0x29:
       op_FX29(X);
@@ -252,14 +281,19 @@ void op_EXA1(uint8_t VX, uint8_t key_press) {
   }
 }
 
-void op_FX0A(uint8_t VX, uint8_t key_press) {
-  printf("key press %x\n", key_press);
-  if (key_press >= 0x0 && key_press <= 0xF) {
-    gp_regs[VX] = key_press;
-    return;
+void op_FX0A(uint8_t VX, uint8_t key_press, uint8_t key_release) {
+  if (key_release > 0xF) {
+    pc_reg -= 2;
+  } else {
+    gp_regs[VX] = key_release;
   }
-  pc_reg -= 2;
 }
+
+void op_FX07(uint8_t VX) { gp_regs[VX] = delay_timer; }
+
+void op_FX15(uint8_t VX) { delay_timer = gp_regs[VX]; }
+
+void op_FX18(uint8_t VX) { sound_timer = gp_regs[VX]; }
 
 void op_FX1E(uint8_t VX) {
   if ((i_reg + gp_regs[VX]) > 0x0FFF) {

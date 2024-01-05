@@ -8,6 +8,8 @@
 uint16_t pc_reg;
 uint16_t i_reg;
 uint8_t gp_regs[16];
+uint8_t delay_timer;
+uint8_t sound_timer;
 
 // initalize all components needed
 void init_chip8_components() {
@@ -16,6 +18,8 @@ void init_chip8_components() {
   init_stack(&stack_reg);
   pc_reg = 0x200;
   i_reg = 0;
+  delay_timer = 0;
+  sound_timer = 0;
   memset(&gp_regs, 0, 16);
 }
 

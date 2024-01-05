@@ -7,12 +7,14 @@
 #include <stdlib.h>
 #include <time.h>
 
+extern int instruction_count;
+
 // Fetch -> Decode -> Execute cycle
 // Fetch 2 bytes from memory, increment PC by 2 and return the bytes
 uint8_t *fetch(uint8_t *out);
 
 // Decode and execute
-void decode_execute(uint8_t *instr_arr, uint8_t key_press);
+void decode_execute(uint8_t *instr_arr, uint8_t key_press, uint8_t key_release);
 
 // Instruction set defined below
 
@@ -90,7 +92,16 @@ void op_EX9E(uint8_t VX, uint8_t key_press);
 void op_EXA1(uint8_t VX, uint8_t key_press);
 
 // FX0A - Get Key
-void op_FX0A(uint8_t VX, uint8_t key_press);
+void op_FX0A(uint8_t VX, uint8_t key_press, uint8_t key_release);
+
+// FX07 - Set VX = delay timer
+void op_FX07(uint8_t VX);
+
+// FX15 - Set delay timer = VX
+void op_FX15(uint8_t VX);
+
+// FX18 - Set Sound timer = VX
+void op_FX18(uint8_t VX);
 
 // FX1E - Add to Index I += VX, VF = 1 if I > 0XFFF
 void op_FX1E(uint8_t VX);

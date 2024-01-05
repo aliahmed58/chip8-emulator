@@ -1,6 +1,7 @@
 #include "../include/timer.h"
 #include <SDL3/SDL_timer.h>
 #include <stdint.h>
+#include <stdio.h>
 
 uint8_t get_ticks(Timer *self) {
   Uint32 time = 0;
@@ -10,9 +11,24 @@ uint8_t get_ticks(Timer *self) {
       time = self->paused_ticks;
     } else {
       time = SDL_GetTicks() - self->start_ticks;
+      if (time % 1000 == 0) {
+        if (self->seen != time) {
+          self->seen = time;
+
+          if (self->interval > 0) {
+            uint8_t res = self->interval - 60;
+            if (res > self->interval) {
+              self->interval = 0;
+            } else {
+
+              self->interval -= 1;
+            }
+          }
+        }
+      }
     }
   }
-  return (uint8_t)time;
+  return (uint8_t)(time / 1000);
 }
 
 void start(Timer *self) {
@@ -51,6 +67,7 @@ void unpause(Timer *self) {
 void init_timer(Timer *self) {
   self->start_ticks = 0;
   self->paused_ticks = 0;
+  self->interval = 0;
   self->paused = SDL_FALSE;
   self->started = SDL_FALSE;
 
